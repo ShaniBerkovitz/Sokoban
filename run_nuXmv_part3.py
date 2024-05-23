@@ -8,17 +8,16 @@ def nuXmv_running(name_model, eng):
     nuXmv_proc = subprocess.Popen(["nuXmv", name_model], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                                   universal_newlines=True)  # Open the process
     #####
-    commands = f"set {engine}\nread_model {model_filename}\ngo\ncheck_ltlspec\nquit\n"
-    stdout, stderr = nuxmv_process.communicate(commands)
+    commands = f"set {eng}\nread_model {name_model}\ngo\ncheck_ltlspec\nquit\n"
+    stdout, stderr = nuXmv_proc.communicate(commands)
     end_time = time.time()
     elapsed_time = end_time - start_time
     #####
     out_file = name_model.split(".")[
-                   0] + f"_{engine}.out"  # Create the name for new file, the model name with extension: .out
+                   0] + f"_{eng}.out"  # Create the name for new file, the model name with extension: .out
     with open(out_file, "w") as file:  # Open the file in order to write in it.
         file.write(stdout)
     print("Saved in:" + out_file)
-    print(f"With {engine.upper()} engine, it takes: {elapsed_time:.2f} seconds")
     return elapsed_time
 
 
@@ -158,23 +157,28 @@ def board_solving(board_str):
 
     model_file = open(name_model, "w")  # Open the file to write to it.
     model_file.write(to_model_SMV)
+    model_file.close()
 
-    out_file_BDD = nuXmv_running(name_model, "bdd")  # Running the nuXmv file.
-    out_file_SAT = nuXmv_running(name_model, "sat")  # Running the nuXmv file.
+    time_bdd = nuXmv_running(name_model, "bdd")  # Running the nuXmv file.
+    time_sat = nuXmv_running(name_model, "sat")  # Running the nuXmv file.
 
     print(f"\nCompare between models")
-    print(f"With BDD Engine, it takes: {time_bdd:.2f} seconds")
-    print(f"With SAT Engine, it takes: {time_sat:.2f} seconds")
-    if out_file_SAT < out_file_BDD:
+    print(f"With BDD Engine, it takes: {time_bdd:.5f} seconds")
+    print(f"With SAT Engine, it takes: {time_sat:.5f} seconds")
+    if time_sat < time_bdd:
         print(f"With SAT it is shorter!")
     else:
         print(f"With BDD it is shorter!")
 
 
 board_xsb = """\
-#####
-#$@.#
-#####
+#######
+#@----#
+#--.$-#
+#---###
+#--$--#
+#---#.#
+#######
 """
 
 board_solving(board_xsb)
