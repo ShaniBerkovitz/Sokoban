@@ -3,7 +3,7 @@ import math
 
 
 # This function runs a nuxmv file with file as input and saves the input.
-def nuXmv_runing(name_model):
+def nuXmv_running(name_model):
     nuXmv_proc = subprocess.Popen(["nuXmv", name_model], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                                   universal_newlines=True)  # Open the process
     out_file = name_model.split(".")[0] + ".out"  # Create the name for new file, the model name with extension: .out
@@ -153,7 +153,7 @@ def board_solving(board_str):
     model_file.write(to_model_SMV)
     model_file.close()
 
-    out_file = nuXmv_runing(name_model)  # Running the nuXmv file.
+    out_file = nuXmv_running(name_model)  # Running the nuXmv file.
 
     temp_file = open(out_file, "r")  # Open the file to read the output.
     output = temp_file.read()

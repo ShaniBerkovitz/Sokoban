@@ -1,40 +1,47 @@
 import subprocess
 import time
 
+
 # This function runs a nuxmv file with file as input and saves the input.
-def nuXmv_runing(name_model, eng):
+def nuXmv_running(name_model, eng):
     start_time = time.time()
-    nuXmv_proc = subprocess.Popen(["nuXmv", name_model], stdin=subprocess.PIPE, stdout=subprocess.PIPE, universal_newlines=True)        #Open the process
+    nuXmv_proc = subprocess.Popen(["nuXmv", name_model], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                                  universal_newlines=True)  # Open the process
     #####
     commands = f"set {engine}\nread_model {model_filename}\ngo\ncheck_ltlspec\nquit\n"
     stdout, stderr = nuxmv_process.communicate(commands)
     end_time = time.time()
     elapsed_time = end_time - start_time
     #####
-    out_file = name_model.split(".")[0] + f"_{engine}.out"                    #Create the name for new file, the model name with extension: .out
-    with open(out_file, "w") as file:                               #Open the file in order to write in it.
+    out_file = name_model.split(".")[
+                   0] + f"_{engine}.out"  # Create the name for new file, the model name with extension: .out
+    with open(out_file, "w") as file:  # Open the file in order to write in it.
         file.write(stdout)
     print("Saved in:" + out_file)
     print(f"With {engine.upper()} engine, it takes: {elapsed_time:.2f} seconds")
     return elapsed_time
 
-#This function gets a board in smv and parsing it.
+
+# This function gets a board in smv and parsing it.
 def board_parsing(board_str):
     lines = board_str.split('\n')
     board = [list(line.strip()) for line in lines if line.strip()]
     return board
 
-#This function gets a board and the place (x,y) and returns whether it is valid or not.
+
+# This function gets a board and the place (x,y) and returns whether it is valid or not.
 def place_validation(c, r, board):
     row = len(board)
     col = len(board[0])
     return 0 <= c and c < col and 0 <= r and r < row and board[r][c] != '#'
 
-#This function gets a board and the place (x,y) of the keeper and returns whether it is valid or not.
+
+# This function gets a board and the place (x,y) of the keeper and returns whether it is valid or not.
 def keeper_validation(c, r, board):
     return place_validation(c, r, board) and board[r][c] != '*' and board[r][c] != '$'
 
-#This function returns the stinig that writes the VAR part.
+
+# This function returns the stinig that writes the VAR part.
 def vars(board, col, row):
     add_str = ""
     for r in range(row):
@@ -45,7 +52,8 @@ def vars(board, col, row):
 
     return add_str
 
-#This function returns the string that writes the INIT part.
+
+# This function returns the string that writes the INIT part.
 def initials(board, col, row):
     add_str = ""
     init_state = []
@@ -68,7 +76,8 @@ def initials(board, col, row):
 
     return add_str
 
-#This function returns the string that writes the TRANS part.
+
+# This function returns the string that writes the TRANS part.
 def trans(board, col, row):
     add_str = f"   case\n"
     trans = []  # List of transitions, at first empty.
@@ -86,13 +95,16 @@ def trans(board, col, row):
                             f"       next(position_{r}_{c}) = 1 &\n       next(position_{new_r}_{new_c}) = 3 &\n       next(steps) = steps + 1 \n")
                         for rr in range(row):
                             for cc in range(col):
-                                if not (rr == r and cc == c) and not (rr == new_r and cc == new_c) and place_validation(cc, rr, board):
+                                if not (rr == r and cc == c) and not (rr == new_r and cc == new_c) and place_validation(
+                                        cc, rr, board):
                                     trans.append(f"       & next(position_{rr}_{cc}) = position_{rr}_{cc} \n")
                         trans.append(';')
                         if keeper_validation(c + 2 * change_c, r + 2 * change_r, board):
                             nnew_c, nnew_r = c + 2 * change_c, r + 2 * change_r
-                            trans.append(f"    (steps < 60 & position_{r}_{c} = 3 & position_{new_r}_{new_c} = 2 & position_{nnew_r}_{nnew_c} = 1):\n")
-                            trans.append(f"       (next(position_{r}_{c}) = 1 &\n       next(position_{new_r}_{new_c}) = 3 &\n       next(position_{nnew_r}_{nnew_c}) = 2 &\n       next(steps) = steps + 1);\n")
+                            trans.append(
+                                f"    (steps < 60 & position_{r}_{c} = 3 & position_{new_r}_{new_c} = 2 & position_{nnew_r}_{nnew_c} = 1):\n")
+                            trans.append(
+                                f"       (next(position_{r}_{c}) = 1 &\n       next(position_{new_r}_{new_c}) = 3 &\n       next(position_{nnew_r}_{nnew_c}) = 2 &\n       next(steps) = steps + 1);\n")
             if place_validation(c, r, board):
                 true_cases.append(f"       (next(position_{r}_{c}) = position_{r}_{c})&")
 
@@ -102,7 +114,8 @@ def trans(board, col, row):
 
     return add_str
 
-#This function returns the string that writes the ltl part.
+
+# This function returns the string that writes the ltl part.
 def ltlspec(board, col, row):
     add_str = ""
     stars = []
@@ -118,34 +131,36 @@ def ltlspec(board, col, row):
 
     return add_str
 
-#This function gets a board and makes it an smv board.
+
+# This function gets a board and makes it an smv board.
 def SMV_making(board):
     row = len(board)
     col = len(board[0])
 
-    to_model_SMV = f"MODULE main\n"             #First line in an smv file.
-    to_model_SMV += f"VAR\n"                    #Title for VARS:
-    to_model_SMV += vars(board, col, row)       #Add the vars.
-    to_model_SMV += f"INIT\n"                   #Title for INITS:
-    to_model_SMV += initials(board, col, row)   #Add the initials.
-    to_model_SMV += f"TRANS\n"                  #Title for TRANS:
-    to_model_SMV += trans(board, col, row)      #Add the transitions.
-    to_model_SMV += f"LTLSPEC\n   ! (F ("       #Title for LTLSPEC:
-    to_model_SMV += ltlspec(board, col, row)    #Add the ltls.
+    to_model_SMV = f"MODULE main\n"  # First line in an smv file.
+    to_model_SMV += f"VAR\n"  # Title for VARS:
+    to_model_SMV += vars(board, col, row)  # Add the vars.
+    to_model_SMV += f"INIT\n"  # Title for INITS:
+    to_model_SMV += initials(board, col, row)  # Add the initials.
+    to_model_SMV += f"TRANS\n"  # Title for TRANS:
+    to_model_SMV += trans(board, col, row)  # Add the transitions.
+    to_model_SMV += f"LTLSPEC\n   ! (F ("  # Title for LTLSPEC:
+    to_model_SMV += ltlspec(board, col, row)  # Add the ltls.
 
     return to_model_SMV
 
-#This function will solve the board
+
+# This function will solve the board
 def board_solving(board_str):
-    board = board_parsing(board_str)        #Parse the board.
-    to_model_SMV = SMV_making(board)        #Make SMV.
+    board = board_parsing(board_str)  # Parse the board.
+    to_model_SMV = SMV_making(board)  # Make SMV.
     name_model = "sokoban.smv"
 
-    model_file = open(name_model, "w")      #Open the file to write to it.
+    model_file = open(name_model, "w")  # Open the file to write to it.
     model_file.write(to_model_SMV)
 
-    out_file_BDD = nuXmv_runing(name_model, "bdd") #Running the nuXmv file.
-    out_file_SAT = nuXmv_runing(name_model, "sat") #Running the nuXmv file.
+    out_file_BDD = nuXmv_running(name_model, "bdd")  # Running the nuXmv file.
+    out_file_SAT = nuXmv_running(name_model, "sat")  # Running the nuXmv file.
 
     print(f"\nCompare between models")
     print(f"With BDD Engine, it takes: {time_bdd:.2f} seconds")
@@ -154,6 +169,7 @@ def board_solving(board_str):
         print(f"With SAT it is shorter!")
     else:
         print(f"With BDD it is shorter!")
+
 
 board_xsb = """\
 #####
