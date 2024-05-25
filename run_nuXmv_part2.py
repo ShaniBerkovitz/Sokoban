@@ -1,5 +1,4 @@
 import subprocess
-import math
 
 
 # This function runs a nuxmv file with file as input and saves the input.
@@ -26,7 +25,7 @@ def board_parsing(board_str):
 def place_validation(c, r, board):
     row = len(board)
     col = len(board[0])
-    return 0 <= c and c < col and 0 <= r and r < row and board[r][c] != '#'
+    return 0 <= c < col and 0 <= r < row and board[r][c] != '#'
 
 
 # This function gets a board and the place (x,y) of the keeper and returns whether it is valid or not.
@@ -34,14 +33,14 @@ def keeper_validation(c, r, board):
     return place_validation(c, r, board) and board[r][c] != '*' and board[r][c] != '$'
 
 
-# This function returns the stinig that writes the VAR part.
+# This function returns the string that writes the VAR part.
 def vars(board, col, row):
     add_str = ""
     for r in range(row):
         for c in range(col):
             if board[r][c] != '#':
                 add_str += f"    position_{r}_{c} : 1..3;\n"
-    add_str += f"    steps : 0..60;\n"
+    add_str += f"    steps : 0..50;\n"
 
     return add_str
 
@@ -64,8 +63,8 @@ def initials(board, col, row):
                 init_state.append(f"position_{r}_{c} = 3")
             elif board[r][c] == '+':
                 init_state.append(f"position_{r}_{c} = 3")
-    add_str += " & ".join(init_state)
-    add_str += f" & steps = 0\n"  # Starts with 0 steps.
+    add_str += " &\n".join(init_state)
+    add_str += f" &\nsteps = 0\n"  # Starts with 0 steps.
 
     return add_str
 
@@ -83,7 +82,7 @@ def trans(board, col, row):
                 for change_c, change_r in dirs:
                     new_c, new_r = c + change_c, r + change_r
                     if place_validation(new_c, new_r, board):
-                        trans.append(f"    (steps < 60 & position_{r}_{c} = 3 & position_{new_r}_{new_c} = 1):\n")
+                        trans.append(f"    (steps < 50 & position_{r}_{c} = 3 & position_{new_r}_{new_c} = 1):\n")
                         trans.append(
                             f"       next(position_{r}_{c}) = 1 &\n       next(position_{new_r}_{new_c}) = 3 &\n       next(steps) = steps + 1 \n")
                         for rr in range(row):
@@ -95,7 +94,7 @@ def trans(board, col, row):
                         if keeper_validation(c + 2 * change_c, r + 2 * change_r, board):
                             nnew_c, nnew_r = c + 2 * change_c, r + 2 * change_r
                             trans.append(
-                                f"    (steps < 60 & position_{r}_{c} = 3 & position_{new_r}_{new_c} = 2 & position_{nnew_r}_{nnew_c} = 1):\n")
+                                f"    (steps < 50 & position_{r}_{c} = 3 & position_{new_r}_{new_c} = 2 & position_{nnew_r}_{nnew_c} = 1):\n")
                             trans.append(
                                 f"       (next(position_{r}_{c}) = 1 &\n       next(position_{new_r}_{new_c}) = 3 &\n       next(position_{nnew_r}_{nnew_c}) = 2 &\n       next(steps) = steps + 1);\n")
             if place_validation(c, r, board):
@@ -147,7 +146,7 @@ def SMV_making(board):
 def board_solving(board_str):
     board = board_parsing(board_str)  # Parse the board.
     to_model_SMV = SMV_making(board)  # Make SMV.
-    name_model = "sokoban.smv"
+    name_model = f"sokoban.smv"
 
     model_file = open(name_model, "w")  # Open the file to write to it.
     model_file.write(to_model_SMV)

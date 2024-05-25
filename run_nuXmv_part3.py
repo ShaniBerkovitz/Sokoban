@@ -47,7 +47,7 @@ def vars(board, col, row):
         for c in range(col):
             if board[r][c] != '#':
                 add_str += f"    position_{r}_{c} : 1..3;\n"
-    add_str += f"    steps : 0..60;\n"
+    add_str += f"    steps : 0..50;\n"
 
     return add_str
 
@@ -89,7 +89,7 @@ def trans(board, col, row):
                 for change_c, change_r in dirs:
                     new_c, new_r = c + change_c, r + change_r
                     if place_validation(new_c, new_r, board):
-                        trans.append(f"    (steps < 60 & position_{r}_{c} = 3 & position_{new_r}_{new_c} = 1):\n")
+                        trans.append(f"    (steps < 50 & position_{r}_{c} = 3 & position_{new_r}_{new_c} = 1):\n")
                         trans.append(
                             f"       next(position_{r}_{c}) = 1 &\n       next(position_{new_r}_{new_c}) = 3 &\n       next(steps) = steps + 1 \n")
                         for rr in range(row):
@@ -101,7 +101,7 @@ def trans(board, col, row):
                         if keeper_validation(c + 2 * change_c, r + 2 * change_r, board):
                             nnew_c, nnew_r = c + 2 * change_c, r + 2 * change_r
                             trans.append(
-                                f"    (steps < 60 & position_{r}_{c} = 3 & position_{new_r}_{new_c} = 2 & position_{nnew_r}_{nnew_c} = 1):\n")
+                                f"    (steps < 50 & position_{r}_{c} = 3 & position_{new_r}_{new_c} = 2 & position_{nnew_r}_{nnew_c} = 1):\n")
                             trans.append(
                                 f"       (next(position_{r}_{c}) = 1 &\n       next(position_{new_r}_{new_c}) = 3 &\n       next(position_{nnew_r}_{nnew_c}) = 2 &\n       next(steps) = steps + 1);\n")
             if place_validation(c, r, board):
@@ -173,11 +173,10 @@ def board_solving(board_str):
 
 board_xsb = """\
 #######
-#@----#
-#--.$-#
-#---###
-#--$--#
-#---#.#
+#@#####
+#$-####
+#.-$-.#
+##-$-.#
 #######
 """
 

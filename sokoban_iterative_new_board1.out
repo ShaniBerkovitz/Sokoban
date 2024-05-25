@@ -1,0 +1,256 @@
+*** This is nuXmv 2.0.0 (compiled on Mon Oct 14 18:05:39 2019)
+*** Copyright (c) 2014-2019, Fondazione Bruno Kessler
+*** For more information on nuXmv see https://nuxmv.fbk.eu
+*** or email to <nuxmv@list.fbk.eu>.
+*** Please report bugs at https://nuxmv.fbk.eu/bugs
+*** (click on "Login Anonymously" to access)
+*** Alternatively write to <nuxmv@list.fbk.eu>.
+
+*** This version of nuXmv is linked to NuSMV 2.6.0.
+*** For more information on NuSMV see <http://nusmv.fbk.eu>
+*** or email to <nusmv-users@list.fbk.eu>.
+*** Copyright (C) 2010-2019, Fondazione Bruno Kessler
+
+*** This version of nuXmv is linked to the CUDD library version 2.4.1
+*** Copyright (c) 1995-2004, Regents of the University of Colorado
+
+*** This version of nuXmv is linked to the MiniSat SAT solver. 
+*** See http://minisat.se/MiniSat.html
+*** Copyright (c) 2003-2006, Niklas Een, Niklas Sorensson
+*** Copyright (c) 2007-2010, Niklas Sorensson
+
+*** This version of nuXmv is linked to MathSAT
+*** Copyright (C) 2009-2019 by Fondazione Bruno Kessler
+*** Copyright (C) 2009-2019 by University of Trento and others
+*** See http://mathsat.fbk.eu
+
+-- specification !( F pos_3_2 = 2)  is false
+-- as demonstrated by the following execution sequence
+Trace Description: LTL Counterexample 
+Trace Type: Counterexample 
+  -> State: 1.1 <-
+    pos_1_1 = 3
+    pos_1_2 = 2
+    pos_1_3 = 2
+    pos_1_4 = 2
+    pos_1_5 = 2
+    pos_2_2 = 2
+    pos_2_3 = 1
+    pos_2_4 = 2
+    pos_2_5 = 2
+    pos_3_2 = 1
+    pos_3_3 = 2
+    pos_3_4 = 3
+    pos_3_5 = 1
+    steps_counter = 0
+  -> State: 1.2 <-
+    pos_1_1 = 1
+    pos_1_2 = 1
+    pos_1_3 = 1
+    pos_1_4 = 1
+    pos_1_5 = 1
+    pos_2_2 = 1
+    pos_2_4 = 1
+    pos_2_5 = 1
+    pos_3_2 = 2
+    pos_3_3 = 3
+    pos_3_4 = 1
+    steps_counter = 1
+  -> State: 1.3 <-
+    pos_3_3 = 1
+    pos_3_4 = 3
+    steps_counter = 2
+  -> State: 1.4 <-
+    pos_3_3 = 3
+    pos_3_4 = 1
+    steps_counter = 3
+  -> State: 1.5 <-
+    pos_3_3 = 1
+    pos_3_4 = 3
+    steps_counter = 4
+  -> State: 1.6 <-
+    pos_3_3 = 3
+    pos_3_4 = 1
+    steps_counter = 5
+  -> State: 1.7 <-
+    pos_3_3 = 1
+    pos_3_4 = 3
+    steps_counter = 6
+  -> State: 1.8 <-
+    pos_3_3 = 3
+    pos_3_4 = 1
+    steps_counter = 7
+  -> State: 1.9 <-
+    pos_3_3 = 1
+    pos_3_4 = 3
+    steps_counter = 8
+  -> State: 1.10 <-
+    pos_3_3 = 3
+    pos_3_4 = 1
+    steps_counter = 9
+  -> State: 1.11 <-
+    pos_3_3 = 1
+    pos_3_4 = 3
+    steps_counter = 10
+  -> State: 1.12 <-
+    pos_3_3 = 3
+    pos_3_4 = 1
+    steps_counter = 11
+  -> State: 1.13 <-
+    pos_3_3 = 1
+    pos_3_4 = 3
+    steps_counter = 12
+  -> State: 1.14 <-
+    pos_3_3 = 3
+    pos_3_4 = 1
+    steps_counter = 13
+  -> State: 1.15 <-
+    pos_3_3 = 1
+    pos_3_4 = 3
+    steps_counter = 14
+  -> State: 1.16 <-
+    pos_3_3 = 3
+    pos_3_4 = 1
+    steps_counter = 15
+  -> State: 1.17 <-
+    pos_3_3 = 1
+    pos_3_4 = 3
+    steps_counter = 16
+  -> State: 1.18 <-
+    pos_3_3 = 3
+    pos_3_4 = 1
+    steps_counter = 17
+  -> State: 1.19 <-
+    pos_3_3 = 1
+    pos_3_4 = 3
+    steps_counter = 18
+  -> State: 1.20 <-
+    pos_3_3 = 3
+    pos_3_4 = 1
+    steps_counter = 19
+  -> State: 1.21 <-
+    pos_3_3 = 1
+    pos_3_4 = 3
+    steps_counter = 20
+  -> State: 1.22 <-
+    pos_3_3 = 3
+    pos_3_4 = 1
+    steps_counter = 21
+  -> State: 1.23 <-
+    pos_3_3 = 1
+    pos_3_4 = 3
+    steps_counter = 22
+  -> State: 1.24 <-
+    pos_3_3 = 3
+    pos_3_4 = 1
+    steps_counter = 23
+  -> State: 1.25 <-
+    pos_3_3 = 1
+    pos_3_4 = 3
+    steps_counter = 24
+  -> State: 1.26 <-
+    pos_3_3 = 3
+    pos_3_4 = 1
+    steps_counter = 25
+  -> State: 1.27 <-
+    pos_3_3 = 1
+    pos_3_4 = 3
+    steps_counter = 26
+  -> State: 1.28 <-
+    pos_3_3 = 3
+    pos_3_4 = 1
+    steps_counter = 27
+  -> State: 1.29 <-
+    pos_3_3 = 1
+    pos_3_4 = 3
+    steps_counter = 28
+  -> State: 1.30 <-
+    pos_3_3 = 3
+    pos_3_4 = 1
+    steps_counter = 29
+  -> State: 1.31 <-
+    pos_3_3 = 1
+    pos_3_4 = 3
+    steps_counter = 30
+  -> State: 1.32 <-
+    pos_3_3 = 3
+    pos_3_4 = 1
+    steps_counter = 31
+  -> State: 1.33 <-
+    pos_3_3 = 1
+    pos_3_4 = 3
+    steps_counter = 32
+  -> State: 1.34 <-
+    pos_3_3 = 3
+    pos_3_4 = 1
+    steps_counter = 33
+  -> State: 1.35 <-
+    pos_3_3 = 1
+    pos_3_4 = 3
+    steps_counter = 34
+  -> State: 1.36 <-
+    pos_3_3 = 3
+    pos_3_4 = 1
+    steps_counter = 35
+  -> State: 1.37 <-
+    pos_3_3 = 1
+    pos_3_4 = 3
+    steps_counter = 36
+  -> State: 1.38 <-
+    pos_3_3 = 3
+    pos_3_4 = 1
+    steps_counter = 37
+  -> State: 1.39 <-
+    pos_3_3 = 1
+    pos_3_4 = 3
+    steps_counter = 38
+  -> State: 1.40 <-
+    pos_3_3 = 3
+    pos_3_4 = 1
+    steps_counter = 39
+  -> State: 1.41 <-
+    pos_3_3 = 1
+    pos_3_4 = 3
+    steps_counter = 40
+  -> State: 1.42 <-
+    pos_3_3 = 3
+    pos_3_4 = 1
+    steps_counter = 41
+  -> State: 1.43 <-
+    pos_3_3 = 1
+    pos_3_4 = 3
+    steps_counter = 42
+  -> State: 1.44 <-
+    pos_3_3 = 3
+    pos_3_4 = 1
+    steps_counter = 43
+  -> State: 1.45 <-
+    pos_3_3 = 1
+    pos_3_4 = 3
+    steps_counter = 44
+  -> State: 1.46 <-
+    pos_3_3 = 3
+    pos_3_4 = 1
+    steps_counter = 45
+  -> State: 1.47 <-
+    pos_3_3 = 1
+    pos_3_4 = 3
+    steps_counter = 46
+  -> State: 1.48 <-
+    pos_3_3 = 3
+    pos_3_4 = 1
+    steps_counter = 47
+  -> State: 1.49 <-
+    pos_3_3 = 1
+    pos_3_4 = 3
+    steps_counter = 48
+  -> State: 1.50 <-
+    pos_3_3 = 3
+    pos_3_4 = 1
+    steps_counter = 49
+  -- Loop starts here
+  -> State: 1.51 <-
+    pos_3_3 = 1
+    pos_3_4 = 3
+    steps_counter = 50
+  -> State: 1.52 <-
